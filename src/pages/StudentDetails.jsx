@@ -95,7 +95,7 @@ const StudentDetail = () => {
                 <input
                   type="email"
                   placeholder={student.email || ""}
-                  className="bg-gray-600 px-4 py-1 ms-10"
+                  className="bg-gray-600 px-4 py-1 ms-10 w-[250px]"
                   disabled
                 />
               </div>

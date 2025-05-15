@@ -2,12 +2,12 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const login = createAsyncThunk("get/student", async (data) => {
-  const response = await axios.post(`http://localhost:5000/student`, data);
+  const response = await axios.post(`https://carma-be.vercel.app/student`, data);
   return response.data.student;
 });
 
 export const deleteStudent = createAsyncThunk("delete/student", async (id) => {
-  const response = await axios.delete(`http://localhost:5000/student/${id}`);
+  const response = await axios.delete(`https://carma-be.vercel.app/student/${id}`);
   alert(response.data.message)
 });
 
@@ -15,7 +15,7 @@ export const updateStudent = createAsyncThunk(
   "update/student",
   async ({ id, data }) => {
     const response = await axios.put(
-      `http://localhost:5000/student/${id}`,
+      `https://carma-be.vercel.app/student/${id}`,
       data
     );
 
