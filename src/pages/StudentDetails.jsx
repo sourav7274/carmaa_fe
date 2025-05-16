@@ -5,12 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { updateStudent } from "../features/studentSlice";
 import { useState } from "react";
 import { clearData } from "../features/studentSlice";
+import { useEffect } from "react";
 
 const StudentDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { student } = useSelector((state) => state.student);
+  const { student, status } = useSelector((state) => state.student);
   const [update, setUpdate] = useState({
     name: student.name || "",
     course: student.course || "",
@@ -23,6 +24,7 @@ const StudentDetail = () => {
         navigate("/");
       });
   };
+  console.log(status);
   const handleUpdate = async () => {
     const finalUpdate = {
       name: update.name.trim() !== "" ? update.name : student.name,
@@ -49,6 +51,12 @@ const StudentDetail = () => {
     }));
   };
 
+  useEffect(() => {
+    if (!student._id) {
+      navigate("/");
+    }
+  }, [student]);
+
   return (
     <>
       <div className="bg-gray-800 h-screen text-gray-200 ">
@@ -65,72 +73,80 @@ const StudentDetail = () => {
           </>
         ) : (
           <>
-            <div className="flex flex-col items-center gap-12">
-              <p className="text-5xl mt-20">Student Details</p>
-              <div>
-                {" "}
-                <label>Name: </label>
-                <input
-                  type="text"
-                  name="name"
-                  onChange={(e) => handleChange(e)}
-                  value={update.name}
-                  placeholder={student.name || ""}
-                  className="bg-gray-600 px-4 py-1 ms-10"
-                />
-              </div>
-              <div>
-                <label>Age: </label>
-                <input
-                  type="number"
-                  name="age"
-                  onChange={(e) => handleChange(e)}
-                  value={update.age}
-                  placeholder={student.age || ""}
-                  className="bg-gray-600 px-4 py-1 ms-10"
-                />
-              </div>
-              <div>
-                <label>Email: </label>
-                <input
-                  type="email"
-                  placeholder={student.email || ""}
-                  className="bg-gray-600 px-4 py-1 ms-10 w-[250px]"
-                  disabled
-                />
-              </div>
-              <div>
-                {" "}
-                <label>Course: </label>
-                <input
-                  type="text"
-                  name="course"
-                  onChange={(e) => handleChange(e)}
-                  value={update.course}
-                  placeholder={student.course || ""}
-                  className="bg-gray-600 px-4 py-1 ms-10"
-                />
-              </div>
-              <button
-                onClick={() => handleUpdate()}
-                className="bg-gray-300 text-black px-4 py-2 rounded-xl hover:bg-gray-400 cursor-pointer"
-              >
-                Save Details
-              </button>
-              <button
-                onClick={() => handleDeleteStudent()}
-                className="bg-red-500 text-black font-bold px-4 py-2 rounded-xl hover:bg-red-800 cursor-pointer"
-              >
-                Delete Student
-              </button>
-              <Link
-                onClick={() => dispatch(clearData())}
-                to="/"
-                className="bg-red-500 text-black font-bold px-4 py-2 rounded-xl hover:bg-red-800 cursor-pointer"
-              >
-                Log Out
-              </Link>
-            </div>
+            {status == "loading" ? (
+              <>
+                <p>Loading....</p>
+              </>
+            ) : (
+              <>
+                <div className="flex flex-col items-center gap-12">
+                  <p className="text-5xl mt-20">Student Details</p>
+                  <div>
+                    {" "}
+                    <label>Name: </label>
+                    <input
+                      type="text"
+                      name="name"
+                      onChange={(e) => handleChange(e)}
+                      value={update.name}
+                      placeholder={student.name || ""}
+                      className="bg-gray-600 px-4 py-1 ms-10"
+                    />
+                  </div>
+                  <div>
+                    <label>Age: </label>
+                    <input
+                      type="number"
+                      name="age"
+                      onChange={(e) => handleChange(e)}
+                      value={update.age}
+                      placeholder={student.age || ""}
+                      className="bg-gray-600 px-4 py-1 ms-10"
+                    />
+                  </div>
+                  <div>
+                    <label>Email: </label>
+                    <input
+                      type="email"
+                      placeholder={student.email || ""}
+                      className="bg-gray-600 px-4 py-1 ms-10 w-[250px]"
+                      disabled
+                    />
+                  </div>
+                  <div>
+                    {" "}
+                    <label>Course: </label>
+                    <input
+                      type="text"
+                      name="course"
+                      onChange={(e) => handleChange(e)}
+                      value={update.course}
+                      placeholder={student.course || ""}
+                      className="bg-gray-600 px-4 py-1 ms-10"
+                    />
+                  </div>
+                  <button
+                    onClick={() => handleUpdate()}
+                    className="bg-gray-300 text-black px-4 py-2 rounded-xl hover:bg-gray-400 cursor-pointer"
+                  >
+                    Save Details
+                  </button>
+                  <button
+                    onClick={() => handleDeleteStudent()}
+                    className="bg-red-500 text-black font-bold px-4 py-2 rounded-xl hover:bg-red-800 cursor-pointer"
+                  >
+                    Delete Student
+                  </button>
+                  <Link
+                    onClick={() => dispatch(clearData())}
+                    to="/"
+                    className="bg-red-500 text-black font-bold px-4 py-2 rounded-xl hover:bg-red-800 cursor-pointer"
+                  >
+                    Log Out
+                  </Link>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>

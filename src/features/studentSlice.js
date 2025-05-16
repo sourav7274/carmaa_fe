@@ -2,13 +2,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const login = createAsyncThunk("get/student", async (data) => {
-  const response = await axios.post(`https://carma-be.vercel.app/student`, data);
+  const response = await axios.post(
+    `https://carma-be.vercel.app/student`,
+    data
+  );
   return response.data.student;
 });
 
 export const deleteStudent = createAsyncThunk("delete/student", async (id) => {
-  const response = await axios.delete(`https://carma-be.vercel.app/student/${id}`);
-  alert(response.data.message)
+  const response = await axios.delete(
+    `https://carma-be.vercel.app/student/${id}`
+  );
+  alert(response.data.message);
 });
 
 export const updateStudent = createAsyncThunk(
@@ -26,27 +31,30 @@ export const updateStudent = createAsyncThunk(
 const studentSlice = createSlice({
   name: "student",
   initialState: {
-    loading: null,
+    status: "idle",
     error: null,
     message: null,
     student: [],
   },
 
   reducers: {
-    clearData:(state) => {
-      state.student = []
-    }
+    clearData: (state) => {
+      state.student = [];
+      state.status = "idle";
+      state.error = null;
+      state.message = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
-      state.loading = true;
+      state.status = "loading";
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      state.loading = null;
+      state.status = "done";
       state.student = action.payload;
     });
     builder.addCase(login.rejected, (state, action) => {
-      state.loading = null;
+      state.status = "idle";
       state.error = action.payload;
     });
     builder.addCase(deleteStudent.fulfilled, (state) => {
@@ -60,4 +68,4 @@ const studentSlice = createSlice({
 
 export default studentSlice.reducer;
 
-export const {clearData} = studentSlice.actions
+export const { clearData } = studentSlice.actions;
