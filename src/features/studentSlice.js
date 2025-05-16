@@ -34,12 +34,12 @@ const studentSlice = createSlice({
     status: "idle",
     error: null,
     message: null,
-    student: [],
+    student: {},
   },
 
   reducers: {
     clearData: (state) => {
-      state.student = [];
+      state.student = {};
       state.status = "idle";
       state.error = null;
       state.message = null;
@@ -58,7 +58,8 @@ const studentSlice = createSlice({
       state.error = action.payload;
     });
     builder.addCase(deleteStudent.fulfilled, (state) => {
-      state.student = [];
+      state.student = {};
+      state.status = "idle";
     });
     builder.addCase(updateStudent.fulfilled, (state, action) => {
       state.student = action.payload;

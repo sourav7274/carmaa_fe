@@ -26,8 +26,8 @@ function App() {
     <>
       {status == "loading" ? (
         <>
-          <div>
-            <p>Loading......</p>
+          <div className="bg-gray-800 text-white h-screen flex items-center justify-center">
+            <span className="loading loading-dots loading-xl"></span>
           </div>
         </>
       ) : (
